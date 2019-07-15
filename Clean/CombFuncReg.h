@@ -6,7 +6,10 @@ class CombFuncReg {
   bool(*_f)(std::vector<bool>);
   std::vector<bool> lastv;
 public:
-  CombFuncReg(std::vector<FSR> _regs, bool(*func)(std::vector<bool>));
+  CombFuncReg(std::vector<FSR> _regs, bool(*func)(std::vector<bool>)){
+    regs = _regs;
+    _f = func;
+  }
   inline auto getRegs() const { return regs; }
   bool shift();
   inline auto getLast() const { return lastv; }

@@ -10,12 +10,6 @@ bool FSR::shift() {
   return pop;
 }
 
-FSR::FSR(std::vector<bool> initial_state, bool(*feedback)(std::vector<bool>)) {
-    size = initial_state.size();
-    state = initial_state;
-    _f = feedback;
-}
-
 std::ostream& operator<<(std::ostream &os, const FSR &obj) {
   auto toOut = obj.getState();
   for (bool val : toOut) {

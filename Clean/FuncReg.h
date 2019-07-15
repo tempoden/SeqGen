@@ -4,8 +4,12 @@ class FuncReg {
   FSR reg;
   bool (*_f)(std::vector<bool>);
 public:
-  FuncReg(FSR _reg, bool (*f)(std::vector<bool>));
-  inline FSR getReg() const { return reg; };
+  FuncReg(FSR _reg, bool (*f)(std::vector<bool>)){
+    reg = _reg;
+    _f = f;
+  };
+  ~FuncReg(){};
+  FSR getReg() const { return reg; };
   bool shift();
 };
 
