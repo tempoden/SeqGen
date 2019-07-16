@@ -17,6 +17,16 @@ public:
 		state = initial_state;
 		_f = feedback;
 	};
+	NFSR(size_t reg_size, bool(*feedback)(std::vector<bool>)) {
+		size = reg_size;
+		state = std::vector<bool>(size);
+		_f = feedback;
+	};
+	bool(*getFeedbackFunction(void))(std::vector<bool>){
+		return _f;
+	}
+	void setFeedbackFunction(bool(*feedback)(std::vector<bool>)) { _f = feedback;  };
+	void setState(size_t new_state);
 	void setState(std::vector<bool> new_state) { state = new_state; };
 	std::vector<bool> getState() const { return state; };
 	bool shift();
