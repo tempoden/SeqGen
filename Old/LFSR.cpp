@@ -12,6 +12,12 @@ bool LFSR::shift() {
 	return pop;
 }
 
+void LFSR::setState(size_t new_state) {
+	for (size_t i = 0; i < size; i++) {
+		state[i] = (new_state & (1 << (size-i-1)));
+	}
+}
+
 std::vector<size_t> getPos(std::vector<size_t> deg_list, size_t deg) {
 	std::vector<size_t> result;
 	for (auto it : deg_list) {

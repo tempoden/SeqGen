@@ -16,11 +16,17 @@ public:
 		state = initial_state;
 		pos = getPos(pos_list, size);
 	};
+	LFSR(size_t reg_size, std::vector<size_t> pos_list) {
+		size = reg_size;
+		state = std::vector<bool>(size);
+		pos = getPos(pos_list, size);
+	}
 	LFSR(std::vector<bool> initial_state, std::vector<size_t> pos_list) {
 		size = initial_state.size();
 		state = initial_state;
 		pos = getPos(pos_list, size);
 	};
+	void setState(size_t new_state);
 	void setState(std::vector<bool> new_state) { state = new_state; };
 	std::vector<bool> getState() const { return state; };
 	bool shift();
