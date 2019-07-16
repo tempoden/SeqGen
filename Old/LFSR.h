@@ -26,10 +26,11 @@ public:
 		state = initial_state;
 		pos = getPos(pos_list, size);
 	};
-	void setState(size_t new_state);
-	void setState(std::vector<bool> new_state) { state = new_state; };
-	std::vector<bool> getState() const { return state; };
-	bool shift();
+	~LFSR() {};
+	void setState(size_t new_state) override;
+	void setState(std::vector<bool> new_state) override { state = new_state; };
+	std::vector<bool> getState() const override { return state; };
+	bool shift() override;
 };
 
 std::ostream& operator<<(std::ostream &os, const LFSR &obj);
