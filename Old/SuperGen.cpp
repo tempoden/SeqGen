@@ -1,5 +1,6 @@
 #include<iostream>
 #include<map>
+#include <random>
 #include<stdlib.h>
 #include"LFSR.h"
 #include"NFSR.h"
@@ -41,31 +42,39 @@ int main() {
 	FuncReg freg = FuncReg(LFSR({ 1,0,1,1,1,0,1,0,1,0,0,0,1,1,1,1,1,1,0,1,0,1,0,0,1,0,0,1,1,1,0,1 }, { 32,16,7,2 }),
 		feedback
 	);
+	int seed = 123;
+	std::mt19937 engine = std::mt19937(seed);
+	std::uniform_int_distribution <> dis1{ 1, 2147483647 };
 
-	for (size_t i = 0; i < 6553600; i++) {
-		unsigned char result = 0;
-		for (size_t j = 0; j < 2; j++) {
-			result <<= 4;
-			unsigned char a = 0;
-			for (size_t k = 0; k < 4; k++){
-				a <<= 1;
+	for (size_t iter = 0; iter < 1000; iter++) {
+		linear.setState(size_t{ dis1(engine) });
+		non_linear.setState(size_t{ dis1(engine) });
+		freg.getReg().setState(size_t{dis1(engine)});
+		for (size_t i = 0; i < 655360; i++) {
+			unsigned char result = 0;
+			for (size_t j = 0; j < 2; j++) {
+				result <<= 4;
+				unsigned char a = 0;
+				for (size_t k = 0; k < 4; k++) {
+					a <<= 1;
 #ifdef LINEAR_XOR
-				a |= (linear.shift() ^ freg.shift());
+					a |= (linear.shift() ^ freg.shift());
 #else
 #ifdef NON_LINEAR
-				a |= non_linear.shift();
+					a |= non_linear.shift();
 #else
-				a |= (linear.shift() ^ non_linear.shift() ^ freg.shift());
+					a |= (linear.shift() ^ non_linear.shift() ^ freg.shift());
 #endif
+#endif
+				}
+#ifdef S_BLOCK
+				result |= S[a];
+#else
+				result |= a;
 #endif
 			}
-#ifdef S_BLOCK
-			result |= S[a];
-#else
-			result |= a;
-#endif
+			std::cout << result;
 		}
-		std::cout << result;
 	}
 
 	return 0;
